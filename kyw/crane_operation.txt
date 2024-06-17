@@ -1,0 +1,56 @@
+一、crane 代码配置
+   ①创建工作空间 kyw_crane_ws
+	mkdir -p kyw_crane_ws/src
+	cd kyw_crane_ws
+	catkin_make
+  ②将文件内容拷贝到工作空间的src文件夹中，并进行编译
+	catkin_make
+	期间报错：
+	   1、  Could not find a package configuration file provided by "moveit_core" with any of the following names:
+		 moveit_coreConfig.cmake
+    		 moveit_core-config.cmake
+	   解决方案：sudo apt-get install ros-melodic-moveit-core
+	   2、Could not find a package configuration file provided by "moveit_ros_perception" with any of the following names:
+	   解决方案：sudo apt-get install ros-melodic-moveit-ros-perception
+	   3、Could not find a package configuration file provided by "moveit_ros_planning_interface" with any of the following names:
+ 	   解决方案：sudo apt-get install ros-melodic-moveit-ros-planning-interface
+	   4、 Could not find a package configuration file provided by
+"moveit_visual_tools" with any of the following names:
+	   解决方案：sudo apt-get install ros-melodic-moveit-visual-tools
+	   5、 Could not find a package configuration file provided by "Torch" with any of the following names:
+	   解决方案：将libtorch解压，并在CMakeList.txt文件中find_package(Torch REQUIRED)before加入以下内容
+			set(Torch_DIR ~/libtorch/share/cmake/Torch)
+qizhong ~/libtorch/share/cmake/Torch can replace to the dir of your own computer
+	   6、Exception while loading planner 'ompl_interface/OMPLPlanner': According to the loaded plugin descriptions the class ompl_interface/OMPLPlanner with base class type planning_interface::PlannerManager does not exist. Declared types are 
+	    解决方案：sudo apt-get install ros-melodic-moveit
+二、深度学习配置
+    ①新建文件夹，将相关文件都放入即可（目前参考fuxian_LearnSampleDistribution的内容）
+执行： python generate_planning_data.py
+python LiftSceneRepresentationConverter.py
+	期间报错：
+	    1、    import xlrd     ImportError: No module named xlrd
+	    解决方案：pip2 install xlrd==1.2.0
+	       这里要注意python2 和python3 版本之间的差异，https://blog.csdn.net/weixin_53241029/article/details/128416437
+	https://www.cnblogs.com/lidabo/p/16615506.html
+	    切换python版本的默认设置命令： 
+		1、sudo su
+		2、查看当前环境中都有哪些版本的python
+		   update-alternatives --list python
+		3、安装所需版本的python
+		   # update-alternatives --install /usr/bin/python python /usr/bin/python2.7 1
+	           # update-alternatives --install /usr/bin/python python /usr/bin/python3.6 2
+		4、选择默认使用的版本python
+		   update-alternatives --config python
+	    2、    import torch ImportError: No module named torch
+	    解决方案： 直接 pip install torch
+	    https://blog.csdn.net/weixin_42584758/article/details/129531020?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_baidulandingword~default-5-129531020-blog-109337912.235^v29^pc_relevant_default_base3&spm=1001.2101.3001.4242.4&utm_relevant_index=8
+ 2023.5.30日改错记录：
+ 2、报错：xlrd.biffh.XLRDError: Excel xlsx file; not supported 
+    解决方案：pip install xlrd==1.2.0
+ 3、报错：AttributeError: 'ElementTree' object has no attribute 'getiterator'
+    解决方案：1、pip show xlrd 命令找到xlsx.py文件的位置
+             2、将py文件中的getiterator改成iter。
+
+
+
+
